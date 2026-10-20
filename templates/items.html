@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+
+{% block title %}Browse Lost & Found Reports — FindIt{% endblock %}
+
+{% block content %}
+<!-- Search and Filter Controls -->
+<section class="filter-section" aria-label="Search and Filters">
+  <div class="filter-container">
+    <form action="{{ url_for('browse_items') }}" method="GET" class="filter-form" id="filter-form">
+      <!-- Search Input Row -->
+      <div class="search-input-wrapper">
+        <svg class="search-icon" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/>
+        </svg>
+        <input 
+          type="text" 
+          name="q" 
+          id="search-input" 
+          class="search-input" 
+          placeholder="Search by keywords in title or description (e.g. blue bottle, calculator, keys)..."
+          value="{{ current_query }}"
+        >
+        <button type="submit" class="btn btn-primary search-submit" id="btn-filter-search">Search</button>
+      </div>
+
+      <!-- Filter Dropdowns Grid -->
+      <div class="filter-grid">
+        <!-- Report Type Filter -->
+        <div class="filter-group">
+          <label for="filter-type" class="form-label">Report Type</label>
+          <select name="type" id="filter-type" class="form-control" onchange="this.form.submit()">
+            <option value="">All Types (Lost & Found)</option>
+            {% for t in report_types %}
+              <option value="{{ t }}" {% if current_type == t %}selected{% endif %}>{{ t }} Items</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- Category Filter -->
+        <div class="filter-group">
+          <label for="filter-category" class="form-label">Category</label>
+          <select name="category" id="filter-category" class="form-control" onchange="this.form.submit()">
+            <option value="">All Categories</option>
+            {% for cat in categories %}
+              <option value="{{ cat }}" {% if current_category == cat %}selected{% endif %}>{{ cat }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- Campus Location Filter -->
+        <div class="filter-group">
+          <label for="filter-location" class="form-label">Campus Location</label>
+          <select name="location" id="filter-location" class="form-control" onchange="this.form.submit()">
+            <option value="">All Locations</option>
+            {% for loc in locations %}
+              <option value="{{ loc }}" {% if current_location == loc %}selected{% endif %}>{{ loc }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- Status Filter -->
+        <div class="filter-group">
+          <label for="filter-status" class="form-label">Status</label>
+          <select name="status" id="filter-status" class="form-control" onchange="this.form.submit()">
+            <option value="">All Statuses</option>
+            {% for st in statuses %}
+              <option value="{{ st }}" {% if current_status == st %}selected{% endif %}>{{ st }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      <!-- Filter Summary & Reset -->
+      <div class="filter-summary">
+        <div>
+          <strong>{{ items|length }}</strong> report{% if items|length != 1 %}s{% endif %} found
+        </div>
+
+        <div class="filter-actions">
+          {% if current_query or current_type or current_category or current_location or current_status %}
+            <a href="{{ url_for('browse_items') }}" class="btn btn-sm btn-outline" id="btn-clear-filters">
+              ✕ Clear All Filters
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- Item Cards Results Section -->
+<section class="recent-section" aria-label="Browse Results">
+  <div class="section-container">
+    {% if items %}
+      <div class="items-grid" id="items-results-grid">
+        {% for item in items %}
+          <article class="item-card" id="item-card-{{ item.id }}">
+            <div class="card-media">
+              {% if item.image_filename %}
+                <img 
+                  src="{{ url_for('uploaded_file', filename=item.image_filename) }}" 
+                  alt="{{ item.item_name }}" 
+                  class="card-img"
+                  loading="lazy"
+                >
+              {% else %}
+                <img 
+                  src="{{ url_for('static', filename='images/placeholder.svg') }}" 
+                  alt="No photo available" 
+                  class="card-img card-placeholder"
+                >
+              {% endif %}
+              
+              <div class="card-badges">
+                <span class="badge badge-type badge-{{ item.report_type|lower }}">{{ item.report_type }}</span>
+                {% if item.status == 'Recovered' %}
+                  <span class="badge badge-status badge-recovered">Recovered</span>
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="card-body">
+              <span class="card-category">{{ item.category }}</span>
+              <h3 class="card-title">
+                <a href="{{ url_for('view_item', item_id=item.id) }}">{{ item.item_name }}</a>
+              </h3>
+              <p class="card-desc">{{ item.description[:110] }}{% if item.description|length > 110 %}...{% endif %}</p>
+
+              <div class="card-meta">
+                <div class="meta-row">
+                  <svg class="meta-icon" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                  </svg>
+                  <span>{{ item.location }}</span>
+                </div>
+                <div class="meta-row">
+                  <svg class="meta-icon" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
+                  </svg>
+                  <span>{{ item.item_date }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="card-footer">
+              <a href="{{ url_for('view_item', item_id=item.id) }}" class="btn btn-sm btn-outline card-btn">
+                View Details
+              </a>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    {% else %}
+      <!-- Empty Search Results -->
+      <div class="empty-state" id="empty-search-state">
+        <div class="empty-icon-circle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="empty-svg">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+        </div>
+        <h3 class="empty-title">No Matching Reports Found</h3>
+        <p class="empty-desc">
+          We couldn't find any reports matching your search and filter criteria. 
+          Try using broader search terms or clearing some filters.
+        </p>
+        <div class="empty-actions">
+          <a href="{{ url_for('browse_items') }}" class="btn btn-outline" id="btn-reset-filters">View All Reports</a>
+          <a href="{{ url_for('report_lost') }}" class="btn btn-lost" id="btn-report-missing">Report a Missing Item</a>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}
