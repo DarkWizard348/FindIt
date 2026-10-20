@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block title %}{{ item.item_name }} ({{ item.status }}) — FindIt{% endblock %}
+
+{% block content %}
+<div class="detail-page-container">
+  <a href="{{ url_for('browse_items') }}" class="detail-nav-back" id="btn-back-items">
+    <svg class="icon-sm" viewBox="0 0 20 20" fill="currentColor">
+      <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z" clip-rule="evenodd"/>
+    </svg>
+    Back to All Reports
+  </a>
+
+  <article class="detail-card" id="item-detail-card">
+    <!-- Media / Image Column -->
+    <div class="detail-media">
+      {% if item.image_filename %}
+        <img 
+          src="{{ url_for('uploaded_file', filename=item.image_filename) }}" 
+          alt="{{ item.item_name }}" 
+          class="detail-img"
+          id="item-detail-img"
+        >
+      {% else %}
+        <img 
+          src="{{ url_for('static', filename='images/placeholder.svg') }}" 
+          alt="No photo uploaded" 
+          class="detail-img detail-img-placeholder"
+          id="item-detail-placeholder"
+        >
+      {% endif %}
+    </div>
+
+    <!-- Content Column -->
+    <div class="detail-content">
+      <div class="detail-badges">
+        <span class="badge badge-type badge-{{ item.report_type|lower }}">{{ item.report_type }} Item</span>
+        {% if item.status == 'Recovered' %}
+          <span class="badge badge-status badge-recovered" id="badge-recovered">Recovered</span>
+        {% else %}
+          <span class="badge badge-status badge-{{ item.status|lower }}">{{ item.status }}</span>
+        {% endif %}
+      </div>
+
+      <h1 class="detail-title" id="item-title">{{ item.item_name }}</h1>
+
+      <!-- Meta Grid -->
+      <div class="detail-meta-list">
+        <div class="meta-item">
+          <span class="meta-label">Category</span>
+          <span class="meta-val" id="meta-category">{{ item.category }}</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Campus Location</span>
+          <span class="meta-val" id="meta-location">{{ item.location }}</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Date {{ 'Lost' if item.report_type == 'Lost' else 'Found' }}</span>
+          <span class="meta-val" id="meta-date">{{ item.item_date }}</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Report ID & Date</span>
+          <span class="meta-val" id="meta-id">#{{ item.id }} ({{ item.created_at[:10] if item.created_at else 'Recent' }})</span>
+        </div>
+      </div>
+
+      <!-- Description Block -->
+      <div class="detail-desc-box">
+        <h3 class="detail-desc-heading">Description & Clues</h3>
+        <p class="detail-desc-text" id="item-description">{{ item.description }}</p>
+      </div>
+
+      <!-- Actions Panel: Recovered Status & Recovery Verification -->
+      <div class="detail-actions-panel" id="detail-actions-panel">
+        {% if item.status == 'Recovered' %}
+          <div class="status-callout" style="color: var(--found-color);">
+            <strong>✨ This item is marked as Recovered!</strong>
+            <p>It has been safely returned to its rightful student or staff owner.</p>
+          </div>
+        {% else %}
+          <div class="status-callout">
+            <strong>Have you reclaimed or returned this item?</strong>
+            <p>Help keep the campus registry accurate by updating its status.</p>
+          </div>
+
+          <form 
+            action="{{ url_for('mark_recovered', item_id=item.id) }}" 
+            method="POST" 
+            onsubmit="return confirm('Confirm updating this report status to RECOVERED?');"
+            style="margin: 0;"
+          >
+            <button type="submit" class="btn btn-primary" id="btn-mark-recovered">
+              <svg class="icon-sm" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+              </svg>
+              Mark as Recovered
+            </button>
+          </form>
+        {% endif %}
+      </div>
+
+    </div>
+  </article>
+</div>
+{% endblock %}
