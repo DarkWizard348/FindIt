@@ -271,10 +271,20 @@ git log --oneline
 For your college DevOps and Full-Stack ISE-2 assignment submission, capture the following screenshots and store them in an `evidence/` folder:
 
 1. **Homepage:** `evidence/01_homepage.png` — Showing the FindIt hero section, KPI counters (Lost, Found, Recovered), and recent report cards.
+  <img width="1183" height="798" alt="image" src="https://github.com/user-attachments/assets/8a9b64bc-963e-44c8-8f6b-4a5827ed62a9" />
+
 2. **Report Lost Form:** `evidence/02_report_lost_form.png` — Showing the lost item submission form with campus locations and image preview.
+  <img width="1183" height="803" alt="image" src="https://github.com/user-attachments/assets/64117565-5249-45dd-abd1-5e6ce62991d1" />
+
 3. **Report Found Form:** `evidence/03_report_found_form.png` — Showing the found item report page.
+  <img width="1180" height="808" alt="image" src="https://github.com/user-attachments/assets/2ff7d433-c722-4816-b25f-0cd9def2aa7a" />
+
 4. **Search & Multi-Filters:** `evidence/04_search_and_filters.png` — Showing search results filtered by campus location (e.g. Central Library) and category (Water Bottles).
+  <img width="1188" height="802" alt="image" src="https://github.com/user-attachments/assets/e5844563-65f2-43fb-ba0d-99aae19b538b" />
+
 5. **Item Details & Recovery:** `evidence/05_item_detail_recovered.png` — Showing an item page marked with the green "Recovered" status badge.
+   <img width="1177" height="800" alt="image" src="https://github.com/user-attachments/assets/e944c0f8-a741-422c-ad77-443cede82c0f" />
+
 6. **Git Bash History:** `evidence/06_git_log.png` — Showing `git log --oneline` displaying all 5 meaningful commits.
 7. **Pytest Results:** `evidence/07_pytest_success.png` — Showing terminal output with all 13 tests passing (100% green).
 8. **GitHub Repository:** `evidence/08_github_repo.png` — Showing the repository page on GitHub with all files, commits, and README rendered.
