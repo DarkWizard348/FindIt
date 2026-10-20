@@ -266,32 +266,101 @@ git log --oneline
 
 ---
 
-## 14. Screenshot Evidence for College Submission
+## 14. DevOps Tool Integration (ISE-2 Requirement)
+
+To satisfy the DevOps and Kubernetes practical assignment requirements, two industry-standard DevOps tools were integrated into FindIt:
+
+### A. Continuous Integration (CI) with GitHub Actions (`.github/workflows/devops_ci.yml`)
+
+A cloud-native Continuous Integration pipeline was configured to automate testing and code validation on every change pushed to GitHub:
+
+1. **Pipeline Triggers:** 
+   - Triggers automatically on any `push` event to the `main` branch.
+   - Triggers on any `pull_request` targeting `main`.
+2. **Automated Workflow Stages:**
+   - **Runner Environment:** Ubuntu Latest (`ubuntu-latest`).
+   - **Step 1: Code Checkout:** Uses `actions/checkout@v4` to clone the pushed code into the runner.
+   - **Step 2: Python Setup:** Uses `actions/setup-python@v5` to configure Python 3.13 and caches pip dependencies.
+   - **Step 3: Dependency Installation:** Runs `pip install -r requirements.txt` to install Flask, Werkzeug, and pytest.
+   - **Step 4: Automated Testing:** Executes `pytest -v` across all 13 test cases, ensuring that no breaking changes reach production.
+3. **Pipeline Configuration File:**
+   ```yaml
+   name: FindIt DevOps CI Pipeline
+   on:
+     push:
+       branches: [ "main" ]
+     pull_request:
+       branches: [ "main" ]
+   jobs:
+     build-and-test:
+       runs-on: ubuntu-latest
+       steps:
+         - uses: actions/checkout@v4
+         - uses: actions/setup-python@v5
+           with:
+             python-version: "3.13"
+             cache: "pip"
+         - run: pip install -r requirements.txt
+         - run: python -m pytest -v
+   ```
+
+---
+
+### B. Containerization with Docker & Docker Compose (`Dockerfile`, `docker-compose.yml`)
+
+The application is fully containerized to ensure portability and readiness for Kubernetes pod deployment:
+
+1. **Dockerfile Features:**
+   - Base image: `python:3.13-slim` for minimal image size and fast build times.
+   - Configures non-buffering and bytecode suppression environment variables.
+   - Pre-creates volume mounts for `instance/` (SQLite database) and `uploads/` (uploaded images).
+   - Exposes container port `5000` with an integrated health check.
+2. **Local Multi-Container Orchestration:**
+   Execute via Docker in Git Bash:
+   ```bash
+   # Build and run container
+   docker compose up --build -d
+
+   # Check container status
+   docker ps
+   ```
+
+---
+
+## 15. Screenshot Evidence for College Submission
 
 For your college DevOps and Full-Stack ISE-2 assignment submission, capture the following screenshots and store them in an `evidence/` folder:
 
 1. **Homepage:** `evidence/01_homepage.png` — Showing the FindIt hero section, KPI counters (Lost, Found, Recovered), and recent report cards.
-  <img width="1183" height="798" alt="image" src="https://github.com/user-attachments/assets/8a9b64bc-963e-44c8-8f6b-4a5827ed62a9" />
+  <img width="1183" height="798" alt="Homepage" src="https://github.com/user-attachments/assets/8a9b64bc-963e-44c8-8f6b-4a5827ed62a9" />
 
 2. **Report Lost Form:** `evidence/02_report_lost_form.png` — Showing the lost item submission form with campus locations and image preview.
-  <img width="1183" height="803" alt="image" src="https://github.com/user-attachments/assets/64117565-5249-45dd-abd1-5e6ce62991d1" />
+  <img width="1183" height="803" alt="Report Lost Form" src="https://github.com/user-attachments/assets/64117565-5249-45dd-abd1-5e6ce62991d1" />
 
 3. **Report Found Form:** `evidence/03_report_found_form.png` — Showing the found item report page.
-  <img width="1180" height="808" alt="image" src="https://github.com/user-attachments/assets/2ff7d433-c722-4816-b25f-0cd9def2aa7a" />
+  <img width="1180" height="808" alt="Report Found Form" src="https://github.com/user-attachments/assets/2ff7d433-c722-4816-b25f-0cd9def2aa7a" />
 
 4. **Search & Multi-Filters:** `evidence/04_search_and_filters.png` — Showing search results filtered by campus location (e.g. Central Library) and category (Water Bottles).
-  <img width="1188" height="802" alt="image" src="https://github.com/user-attachments/assets/e5844563-65f2-43fb-ba0d-99aae19b538b" />
+  <img width="1188" height="802" alt="Search and Filters" src="https://github.com/user-attachments/assets/e5844563-65f2-43fb-ba0d-99aae19b538b" />
 
 5. **Item Details & Recovery:** `evidence/05_item_detail_recovered.png` — Showing an item page marked with the green "Recovered" status badge.
-   <img width="1177" height="800" alt="image" src="https://github.com/user-attachments/assets/e944c0f8-a741-422c-ad77-443cede82c0f" />
+   <img width="1177" height="800" alt="Item Details & Recovery" src="https://github.com/user-attachments/assets/e944c0f8-a741-422c-ad77-443cede82c0f" />
 
-6. **Git Bash History:** `evidence/06_git_log.png` — Showing `git log --oneline` displaying all 5 meaningful commits.
+6. **Git Bash History:** `evidence/06_git_log.png` — Showing `git log --oneline` displaying all 5+ meaningful commits and branch status.
+   <img width="1000" alt="Git Bash History" src="evidence/06_git_log.png" />
+
 7. **Pytest Results:** `evidence/07_pytest_success.png` — Showing terminal output with all 13 tests passing (100% green).
+   <img width="1000" alt="Pytest Execution Results" src="evidence/07_pytest_success.png" />
+
 8. **GitHub Repository:** `evidence/08_github_repo.png` — Showing the repository page on GitHub with all files, commits, and README rendered.
+   <img width="1000" alt="GitHub Repository Overview" src="evidence/08_github_repo.png" />
+
+9. **DevOps Tool Integration (GitHub Actions CI):** `evidence/09_github_actions_ci.png` — Showing automated CI pipeline execution with green passing build on GitHub Actions.
+   <img width="1000" alt="GitHub Actions CI Pipeline" src="evidence/09_github_actions_ci.png" />
 
 ---
 
-## 15. Limitations & Future Scope
+## 16. Limitations & Future Scope
 
 While FindIt provides a fully functional lost-and-found solution for campus use, future iterations could introduce:
 - **Campus SSO / Student Email Verification:** Integration with college Google Workspace / Microsoft 365 single sign-on to ensure only verified students and staff can post.
@@ -301,6 +370,6 @@ While FindIt provides a fully functional lost-and-found solution for campus use,
 
 ---
 
-## 16. Academic Declaration
+## 17. Academic Declaration
 
-This project was built for the **College DevOps and Full-Stack ISE-2 Website Assignment**. It demonstrates full-stack web engineering with Python Flask, SQLite, test-driven validation using pytest, and disciplined version control workflows using Git Bash and GitHub.
+This project was built for the **College DevOps and Full-Stack ISE-2 Website Assignment**. It demonstrates full-stack web engineering with Python Flask, SQLite, test-driven validation using pytest, containerization with Docker, automated CI with GitHub Actions, and disciplined version control workflows using Git Bash and GitHub.

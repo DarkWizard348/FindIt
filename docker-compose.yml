@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    container_name: findit-campus-portal
+    ports:
+      - "5000:5000"
+    environment:
+      - SECRET_KEY=devops-k8s-findit-portal-secret
+      - FLASK_ENV=production
+    volumes:
+      - ./instance:/app/instance
+      - ./uploads:/app/uploads
+    restart: unless-stopped
