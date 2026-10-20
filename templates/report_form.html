@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+
+{% block title %}Report a {{ report_type }} Item — FindIt{% endblock %}
+
+{% block content %}
+<div class="form-page-container">
+  <div class="form-card">
+    <div class="form-header">
+      <h1 class="form-title">
+        {% if report_type == 'Lost' %}
+          <svg class="icon-md" style="color: var(--lost-color);" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/>
+          </svg>
+          Report a Lost Item
+        {% else %}
+          <svg class="icon-md" style="color: var(--found-color);" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd"/>
+          </svg>
+          Report a Found Item
+        {% endif %}
+      </h1>
+      <p class="form-subtitle">
+        {% if report_type == 'Lost' %}
+          Fill in the details below to notify other campus members about your missing item.
+        {% else %}
+          Help reunite an item found on campus with its rightful student or staff owner.
+        {% endif %}
+      </p>
+    </div>
+
+    <form method="POST" enctype="multipart/form-data" novalidate id="item-report-form">
+      <!-- Item Name -->
+      <div class="form-group">
+        <label for="item_name" class="form-label">
+          Item Name <span class="required">*</span>
+        </label>
+        <input 
+          type="text" 
+          id="item_name" 
+          name="item_name" 
+          class="form-control" 
+          placeholder="e.g. Blue Milton Thermosteel Water Bottle, Casio fx-991EX Calculator" 
+          maxlength="100"
+          value="{{ form_data.item_name if form_data else '' }}"
+          required
+        >
+        <p class="form-help">Include distinctive keywords (brand, model, color).</p>
+      </div>
+
+      <!-- Category and Location in 2 Columns -->
+      <div class="form-row">
+        <!-- Category -->
+        <div class="form-group">
+          <label for="category" class="form-label">
+            Category <span class="required">*</span>
+          </label>
+          <select id="category" name="category" class="form-control" required>
+            <option value="" disabled {% if not form_data or not form_data.category %}selected{% endif %}>Select category...</option>
+            {% for cat in categories %}
+              <option value="{{ cat }}" {% if form_data and form_data.category == cat %}selected{% endif %}>
+                {{ cat }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- Campus Location -->
+        <div class="form-group">
+          <label for="location" class="form-label">
+            Campus Location <span class="required">*</span>
+          </label>
+          <input 
+            type="text" 
+            list="location-options" 
+            id="location" 
+            name="location" 
+            class="form-control" 
+            placeholder="e.g. Central Library 2nd Floor, Main Canteen" 
+            maxlength="120"
+            value="{{ form_data.location if form_data else '' }}"
+            required
+          >
+          <datalist id="location-options">
+            {% for loc in locations %}
+              <option value="{{ loc }}"></option>
+            {% endfor %}
+          </datalist>
+        </div>
+      </div>
+
+      <!-- Date -->
+      <div class="form-group">
+        <label for="item_date" class="form-label">
+          Date {{ 'Lost' if report_type == 'Lost' else 'Found' }} <span class="required">*</span>
+        </label>
+        <input 
+          type="date" 
+          id="item_date" 
+          name="item_date" 
+          class="form-control" 
+          value="{{ form_data.item_date if form_data else '' }}"
+          required
+        >
+        <p class="form-help">Specify when the item was misplaced or discovered on campus.</p>
+      </div>
+
+      <!-- Description -->
+      <div class="form-group">
+        <label for="description" class="form-label">
+          Detailed Description <span class="required">*</span>
+        </label>
+        <textarea 
+          id="description" 
+          name="description" 
+          class="form-control" 
+          rows="4" 
+          placeholder="Describe distinguishing marks, stickers, wear and tear, color details, or specific identifying features..."
+          maxlength="2000"
+          required
+        >{{ form_data.description if form_data else '' }}</textarea>
+        <p class="form-help">
+          <em>Privacy reminder:</em> Never post sensitive personal information such as passwords, phone numbers, or complete ID numbers publicly.
+        </p>
+      </div>
+
+      <!-- Optional Image Upload -->
+      <div class="form-group">
+        <label class="form-label">Item Photo (Optional)</label>
+        <label for="image" class="file-upload-box" id="file-upload-label">
+          <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+            <circle cx="8.5" cy="8.5" r="1.5"/>
+            <polyline points="21 15 16 10 5 21"/>
+          </svg>
+          <span class="upload-prompt" id="upload-prompt-text">Click to choose an image (PNG, JPG, JPEG, WEBP)</span>
+          <p class="upload-hint">Maximum upload size: 5 MB</p>
+          <input type="file" id="image" name="image" class="file-input" accept="image/png,image/jpeg,image/jpg,image/webp">
+        </label>
+
+        <!-- Image Preview Container -->
+        <div class="preview-container" id="image-preview-container">
+          <p class="form-help" style="margin-bottom: 0.35rem; font-weight: 600;">Image Preview:</p>
+          <img id="image-preview" src="" alt="Selected Image Preview" class="preview-img">
+        </div>
+      </div>
+
+      <!-- Form Actions -->
+      <div class="form-actions">
+        <a href="{{ url_for('index') }}" class="btn btn-outline" id="btn-cancel-report">Cancel</a>
+        <button 
+          type="submit" 
+          class="btn {% if report_type == 'Lost' %}btn-lost{% else %}btn-found{% endif %} btn-lg" 
+          id="btn-submit-report"
+        >
+          Publish {{ report_type }} Report
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
