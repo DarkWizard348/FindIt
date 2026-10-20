@@ -245,7 +245,7 @@ Follow these exact steps in Git Bash to connect and push this repository to GitH
 ### Step 2: Link Your Local Repository to GitHub
 Copy the repository URL from GitHub (e.g., `https://github.com/YOUR_USERNAME/FindIt-Lost-And-Found.git`) and run in Git Bash:
 ```bash
-git remote add origin https://github.com/YOUR_USERNAME/FindIt-Lost-And-Found.git
+git remote add origin https://github.com/DarkWizard348/FindIt.git
 ```
 
 Verify the remote link:
