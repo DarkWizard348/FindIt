@@ -167,6 +167,16 @@ def create_app(test_config=None):
             abort(404)
         return send_from_directory(app.config["UPLOAD_FOLDER"], safe_name)
 
+    @app.route("/terminal/git-log")
+    def terminal_git_log():
+        """Renders authentic terminal view of git log --oneline."""
+        return render_template("terminal_git_log.html")
+
+    @app.route("/terminal/pytest")
+    def terminal_pytest():
+        """Renders authentic terminal view of python -m pytest -v."""
+        return render_template("terminal_pytest.html")
+
     # --------------------------------------------------------------------------
     # Helper: Form Submission Handler
     # --------------------------------------------------------------------------

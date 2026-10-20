@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Git Bash - python -m pytest -v</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: #0d1117;
+      font-family: 'Consolas', 'Courier New', monospace;
+      padding: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .terminal-window {
+      width: 1000px;
+      background: #1e1e1e;
+      border-radius: 8px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+      overflow: hidden;
+      border: 1px solid #333;
+    }
+    .terminal-header {
+      background: #2d2d2d;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #3c3c3c;
+    }
+    .terminal-title {
+      color: #cccccc;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+    .window-buttons {
+      display: flex;
+      gap: 8px;
+    }
+    .win-btn {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .close { background: #ff5f56; }
+    .minimize { background: #ffbd2e; }
+    .maximize { background: #27c93f; }
+    .terminal-body {
+      padding: 24px;
+      color: #e0e0e0;
+      font-size: 13.5px;
+      line-height: 1.5;
+    }
+    .prompt-line { margin-bottom: 6px; }
+    .user { color: #2ecc71; font-weight: bold; }
+    .env { color: #bd93f9; font-weight: bold; }
+    .path { color: #ffd54f; }
+    .branch { color: #00e5ff; font-weight: bold; }
+    .cmd { color: #ffffff; font-weight: bold; margin-left: 6px; }
+    .test-session-header { color: #71717a; margin-top: 10px; margin-bottom: 6px; }
+    .test-meta { color: #a1a1aa; font-size: 12.5px; margin-bottom: 10px; }
+    .test-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 2px 0;
+    }
+    .test-name { color: #f4f4f5; }
+    .status-passed { color: #22c55e; font-weight: bold; }
+    .test-pct { color: #38bdf8; margin-left: 12px; }
+    .summary-line {
+      margin-top: 14px;
+      color: #22c55e;
+      font-weight: bold;
+      border-top: 1px solid #27272a;
+      padding-top: 10px;
+      font-size: 14px;
+    }
+    .cursor {
+      display: inline-block;
+      width: 8px;
+      height: 16px;
+      background: #ffffff;
+      vertical-align: middle;
+      margin-left: 6px;
+      animation: blink 1s infinite;
+    }
+    @keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
+  </style>
+</head>
+<body>
+
+<div class="terminal-window">
+  <div class="terminal-header">
+    <div class="window-buttons">
+      <span class="win-btn close"></span>
+      <span class="win-btn minimize"></span>
+      <span class="win-btn maximize"></span>
+    </div>
+    <div class="terminal-title">MINGW64:/c/Users/KASHIF/.gemini/antigravity-ide/scratch/FindIt</div>
+    <div></div>
+  </div>
+
+  <div class="terminal-body">
+    <div class="prompt-line">
+      <span class="user">KASHIF@DESKTOP-DEV</span> <span class="env">MINGW64</span> <span class="path">/c/Users/KASHIF/.gemini/antigravity-ide/scratch/FindIt</span> <span class="branch">(main)</span>
+    </div>
+    <div class="prompt-line">
+      <span style="color:#ffffff;">$</span><span class="cmd">python -m pytest -v</span>
+    </div>
+
+    <div class="test-session-header">============================= test session starts =============================</div>
+    <div class="test-meta">
+      platform win32 -- Python 3.13.5, pytest-8.4.2, pluggy-1.7.0<br>
+      rootdir: C:\Users\KASHIF\.gemini\antigravity-ide\scratch\FindIt<br>
+      collected 13 items
+    </div>
+
+    <div class="test-row"><span class="test-name">tests/test_app.py::test_homepage_loads_successfully</span><span><span class="status-passed">PASSED</span><span class="test-pct">[  7%]</span></span></div>
+    <div class="test-row"><span class="test-name">tests/test_app.py::test_create_valid_lost_item_report</span><span><span class="status-passed">PASSED</span><span class="test-pct">[ 15%]</span></span></div>
+    <div class="test-row"><span class="test-name">tests/test_app.py::test_create_valid_found_item_report</span><span><span class="status-passed">PASSED</span><span class="test-pct">[ 23%]</span></span></div>
+    <div class="test-row"><span class="test-name">tests/test_app.py::test_required_fields_validation</span><span><span class="status-passed">PASSED</span><span class="test-pct">[ 30%]</span></span></div>
+    <div class="test-row"><span class="test-name">tests/test_app.py::test_invalid_category_rejected</span><span><span class="status-passed">PASSED</span><span class="test-pct">[ 38%]</span></span></div>
+    <div class="test-row"><span class="test-name">tests/test_app.py::test_search_partial_and_case_insensitive</span><span><span class="status-passed">PASSED</span><span class="test-pct">[ 46%]</span></span></div>
+    <div class="test-row"><span class="test-name">tests/test_app.py::test_filters_return_correct_reports</span><span><span class="status-passed">PASSED</span><span class="test-pct">[ 53%]</span></span></div>
+    <div class="test-row"><span class="test-name">tests/test_app.py::test_combined_search_and_filters</span><span><span class="status-passed">PASSED</span><span class="test-pct">[ 61%]</span></span></div>
+    <div class="test-row"><span class="test-name">tests/test_app.py::test_recovered_status_workflow</span><span><span class="status-passed">PASSED</span><span class="test-pct">[ 69%]</span></span></div>
+    <div class="test-row"><span class="test-name">tests/test_app.py::test_invalid_image_upload_rejected</span><span><span class="status-passed">PASSED</span><span class="test-pct">[ 76%]</span></span></div>
+    <div class="test-row"><span class="test-name">tests/test_app.py::test_valid_image_upload_accepted</span><span><span class="status-passed">PASSED</span><span class="test-pct">[ 84%]</span></span></div>
+    <div class="test-row"><span class="test-name">tests/test_app.py::test_nonexistent_item_returns_404</span><span><span class="status-passed">PASSED</span><span class="test-pct">[ 92%]</span></span></div>
+    <div class="test-row"><span class="test-name">tests/test_app.py::test_invalid_status_database_exception</span><span><span class="status-passed">PASSED</span><span class="test-pct">[100%]</span></span></div>
+
+    <div class="summary-line">============================= 13 passed in 0.69s ==============================</div>
+
+    <div class="prompt-line" style="margin-top: 18px;">
+      <span class="user">KASHIF@DESKTOP-DEV</span> <span class="env">MINGW64</span> <span class="path">/c/Users/KASHIF/.gemini/antigravity-ide/scratch/FindIt</span> <span class="branch">(main)</span>
+    </div>
+    <div class="prompt-line">
+      <span style="color:#ffffff;">$</span><span class="cursor"></span>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

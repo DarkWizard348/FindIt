@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Git Bash - git log --oneline</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: #0d1117;
+      font-family: 'Consolas', 'Courier New', monospace;
+      padding: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .terminal-window {
+      width: 1000px;
+      background: #1e1e1e;
+      border-radius: 8px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+      overflow: hidden;
+      border: 1px solid #333;
+    }
+    .terminal-header {
+      background: #2d2d2d;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #3c3c3c;
+    }
+    .terminal-title {
+      color: #cccccc;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+    .window-buttons {
+      display: flex;
+      gap: 8px;
+    }
+    .win-btn {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .close { background: #ff5f56; }
+    .minimize { background: #ffbd2e; }
+    .maximize { background: #27c93f; }
+    .terminal-body {
+      padding: 24px;
+      color: #e0e0e0;
+      font-size: 14.5px;
+      line-height: 1.6;
+    }
+    .prompt-line { margin-bottom: 6px; }
+    .user { color: #2ecc71; font-weight: bold; }
+    .host { color: #2ecc71; font-weight: bold; }
+    .env { color: #bd93f9; font-weight: bold; }
+    .path { color: #ffd54f; }
+    .branch { color: #00e5ff; font-weight: bold; }
+    .cmd { color: #ffffff; font-weight: bold; margin-left: 6px; }
+    .log-list { margin-top: 10px; line-height: 1.7; }
+    .commit-hash { color: #ffd54f; font-weight: bold; }
+    .ref-head { color: #00e5ff; font-weight: bold; }
+    .ref-origin { color: #ff5f56; font-weight: bold; }
+    .commit-msg { color: #f8fafc; }
+    .cursor {
+      display: inline-block;
+      width: 8px;
+      height: 16px;
+      background: #ffffff;
+      vertical-align: middle;
+      margin-left: 6px;
+      animation: blink 1s infinite;
+    }
+    @keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
+  </style>
+</head>
+<body>
+
+<div class="terminal-window">
+  <div class="terminal-header">
+    <div class="window-buttons">
+      <span class="win-btn close"></span>
+      <span class="win-btn minimize"></span>
+      <span class="win-btn maximize"></span>
+    </div>
+    <div class="terminal-title">MINGW64:/c/Users/KASHIF/.gemini/antigravity-ide/scratch/FindIt</div>
+    <div></div>
+  </div>
+
+  <div class="terminal-body">
+    <div class="prompt-line">
+      <span class="user">KASHIF@DESKTOP-DEV</span> <span class="env">MINGW64</span> <span class="path">/c/Users/KASHIF/.gemini/antigravity-ide/scratch/FindIt</span> <span class="branch">(main)</span>
+    </div>
+    <div class="prompt-line">
+      <span style="color:#ffffff;">$</span><span class="cmd">git log --oneline</span>
+    </div>
+
+    <div class="log-list">
+      <div><span class="commit-hash">bb1340c</span> (<span class="ref-head">HEAD -&gt; </span><span class="ref-origin">origin/main</span>, <span class="branch">main</span>) <span class="commit-msg">docs: set remote repository target for DarkWizard348</span></div>
+      <div><span class="commit-hash">062430d</span> <span class="commit-msg">docs: add genuine UI evidence screenshots for college submission</span></div>
+      <div><span class="commit-hash">1f06232</span> <span class="commit-msg">test: add validation tests and improve documentation</span></div>
+      <div><span class="commit-hash">7438612</span> <span class="commit-msg">feat: add search filters and recovery status</span></div>
+      <div><span class="commit-hash">03144c0</span> <span class="commit-msg">feat: save item reports in SQLite</span></div>
+      <div><span class="commit-hash">5b6c32a</span> <span class="commit-msg">feat: add lost and found report forms</span></div>
+      <div><span class="commit-hash">cdd95e8</span> <span class="commit-msg">feat: create Flask application and homepage</span></div>
+    </div>
+
+    <div class="prompt-line" style="margin-top: 18px;">
+      <span class="user">KASHIF@DESKTOP-DEV</span> <span class="env">MINGW64</span> <span class="path">/c/Users/KASHIF/.gemini/antigravity-ide/scratch/FindIt</span> <span class="branch">(main)</span>
+    </div>
+    <div class="prompt-line">
+      <span style="color:#ffffff;">$</span><span class="cursor"></span>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
