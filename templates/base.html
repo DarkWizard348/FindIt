@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}FindIt — College Lost & Found Portal{% endblock %}</title>
+  <meta name="description" content="FindIt is a smart, campus-wide lost and found portal designed for college students to report, track, and recover misplaced belongings safely.">
+
+  <!-- Google Fonts for Modern Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='images/logo.svg') }}">
+</head>
+<body>
+
+  <!-- Top Announcement / Privacy Disclaimer -->
+  <aside class="prototype-banner" role="complementary" aria-label="Prototype Notice">
+    <div class="banner-container">
+      <span class="banner-badge">Campus Notice</span>
+      <p class="banner-text">
+        <strong>FindIt Prototype:</strong> Designed for university campus use. To protect student privacy, please do not post personal phone numbers or ID credentials publicly.
+      </p>
+    </div>
+  </aside>
+
+  <!-- Navigation Bar -->
+  <header class="site-header">
+    <nav class="nav-container" aria-label="Main Navigation">
+      <a href="{{ url_for('index') }}" class="brand-link" id="nav-brand">
+        <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="FindIt Logo" class="brand-logo" width="130" height="36">
+        <span class="brand-tag">Campus Portal</span>
+      </a>
+
+      <!-- Desktop Navigation Links -->
+      <div class="nav-links" id="nav-links">
+        <a href="{{ url_for('index') }}" class="nav-item {% if request.endpoint == 'index' %}active{% endif %}" id="nav-home">Home</a>
+        <a href="{{ url_for('browse_items') }}" class="nav-item {% if request.endpoint == 'browse_items' %}active{% endif %}" id="nav-browse">Browse Reports</a>
+        <a href="{{ url_for('report_lost') }}" class="nav-btn btn-lost" id="nav-report-lost">
+          <svg class="icon-sm" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/></svg>
+          Report Lost
+        </a>
+        <a href="{{ url_for('report_found') }}" class="nav-btn btn-found" id="nav-report-found">
+          <svg class="icon-sm" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd"/></svg>
+          Report Found
+        </a>
+      </div>
+
+      <!-- Mobile Menu Hamburger Button -->
+      <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- Flash Messages Section -->
+  <section class="flash-container" id="flash-container" aria-live="polite">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="flash-alert flash-{{ category }}" role="alert">
+            <div class="flash-content">
+              {% if category == 'success' %}
+                <span class="flash-icon">✓</span>
+              {% elif category == 'danger' or category == 'error' %}
+                <span class="flash-icon">⚠</span>
+              {% else %}
+                <span class="flash-icon">ℹ</span>
+              {% endif %}
+              <span class="flash-text">{{ message }}</span>
+            </div>
+            <button class="flash-close" type="button" aria-label="Dismiss alert">&times;</button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+  </section>
+
+  <!-- Main Application Content -->
+  <main id="main-content" class="main-layout">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-col">
+        <div class="footer-brand">
+          <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="FindIt" class="footer-logo">
+          <p class="footer-desc">
+            A dedicated lost-and-found registry connecting students and staff across the campus community.
+          </p>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4 class="footer-heading">Quick Links</h4>
+        <ul class="footer-nav">
+          <li><a href="{{ url_for('index') }}">Homepage</a></li>
+          <li><a href="{{ url_for('browse_items') }}">Search & Filter Reports</a></li>
+          <li><a href="{{ url_for('report_lost') }}">Report a Lost Item</a></li>
+          <li><a href="{{ url_for('report_found') }}">Report a Found Item</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4 class="footer-heading">Campus Guidelines</h4>
+        <p class="footer-note">
+          Valuable belongings (wallets, laptops, official student IDs) should also be handed over directly to the <strong>Campus Security Office</strong> or <strong>Library Help Desk</strong>.
+        </p>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-bottom-container">
+        <p>&copy; 2026 FindIt Campus Portal. Built for College DevOps & Full-Stack Assignment.</p>
+        <div class="tech-pills">
+          <span class="tech-pill">Python Flask</span>
+          <span class="tech-pill">SQLite</span>
+          <span class="tech-pill">Git & GitHub</span>
+          <span class="tech-pill">pytest</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Core Scripts -->
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

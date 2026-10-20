@@ -1,0 +1,235 @@
+{% extends "base.html" %}
+
+{% block title %}FindIt — College Lost & Found Portal{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section" aria-label="Welcome Banner">
+  <div class="hero-container">
+    <div class="hero-content">
+      <span class="hero-tag">🎓 College Lost & Found Hub</span>
+      <h1 class="hero-title">Recover Misplaced Belongings Across Campus</h1>
+      <p class="hero-subtitle">
+        Lost your water bottle in the library or found an ID card in the canteen? 
+        FindIt enables students and staff to quickly report, track, and safely recover lost belongings within our college.
+      </p>
+
+      <div class="hero-actions">
+        <a href="{{ url_for('report_lost') }}" class="btn btn-lost btn-lg" id="btn-hero-lost">
+          <svg class="icon-md" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/></svg>
+          Report Lost Item
+        </a>
+        <a href="{{ url_for('report_found') }}" class="btn btn-found btn-lg" id="btn-hero-found">
+          <svg class="icon-md" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd"/></svg>
+          Report Found Item
+        </a>
+        <a href="{{ url_for('browse_items') }}" class="btn btn-outline btn-lg" id="btn-hero-browse">
+          Browse All Reports
+        </a>
+      </div>
+
+      <!-- Quick Search Bar -->
+      <form action="{{ url_for('browse_items') }}" method="GET" class="hero-search-bar" role="search">
+        <div class="search-input-wrapper">
+          <svg class="search-icon" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/>
+          </svg>
+          <input 
+            type="text" 
+            name="q" 
+            id="hero-search-input" 
+            class="search-input" 
+            placeholder="Search by item name or description (e.g. blue bottle, calculator, keys)..."
+            aria-label="Search items"
+          >
+          <button type="submit" class="btn btn-primary search-submit" id="btn-hero-search">Search</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- Dashboard Stats Section -->
+<section class="stats-section" aria-label="Campus Statistics">
+  <div class="stats-container">
+    <div class="stats-grid">
+      <!-- Lost Stat Card -->
+      <a href="{{ url_for('browse_items', type='Lost') }}" class="stat-card stat-lost" id="stat-card-lost">
+        <div class="stat-icon-wrapper lost-bg">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="stat-icon">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+        </div>
+        <div class="stat-info">
+          <span class="stat-label">Lost Items</span>
+          <span class="stat-number" id="count-lost">{{ stats.lost }}</span>
+          <span class="stat-caption">Awaiting recovery</span>
+        </div>
+      </a>
+
+      <!-- Found Stat Card -->
+      <a href="{{ url_for('browse_items', type='Found') }}" class="stat-card stat-found" id="stat-card-found">
+        <div class="stat-icon-wrapper found-bg">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="stat-icon">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+            <line x1="12" y1="22.08" x2="12" y2="12"/>
+          </svg>
+        </div>
+        <div class="stat-info">
+          <span class="stat-label">Found Items</span>
+          <span class="stat-number" id="count-found">{{ stats.found }}</span>
+          <span class="stat-caption">Safely reported</span>
+        </div>
+      </a>
+
+      <!-- Recovered Stat Card -->
+      <a href="{{ url_for('browse_items', status='Recovered') }}" class="stat-card stat-recovered" id="stat-card-recovered">
+        <div class="stat-icon-wrapper recovered-bg">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="stat-icon">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+            <polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+        </div>
+        <div class="stat-info">
+          <span class="stat-label">Recovered</span>
+          <span class="stat-number" id="count-recovered">{{ stats.recovered }}</span>
+          <span class="stat-caption">Reunited with owners</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Recent Reports Section -->
+<section class="recent-section" aria-label="Recent Reports">
+  <div class="section-container">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">Recent Campus Reports</h2>
+        <p class="section-subtitle">Latest items reported lost or found by students and staff</p>
+      </div>
+      <a href="{{ url_for('browse_items') }}" class="view-all-link" id="link-view-all">
+        View all reports &rarr;
+      </a>
+    </div>
+
+    {% if recent_items %}
+      <div class="items-grid" id="recent-items-grid">
+        {% for item in recent_items %}
+          <article class="item-card" id="item-card-{{ item.id }}">
+            <div class="card-media">
+              {% if item.image_filename %}
+                <img 
+                  src="{{ url_for('uploaded_file', filename=item.image_filename) }}" 
+                  alt="{{ item.item_name }}" 
+                  class="card-img"
+                  loading="lazy"
+                >
+              {% else %}
+                <img 
+                  src="{{ url_for('static', filename='images/placeholder.svg') }}" 
+                  alt="No photo available" 
+                  class="card-img card-placeholder"
+                >
+              {% endif %}
+              
+              <div class="card-badges">
+                <span class="badge badge-type badge-{{ item.report_type|lower }}">{{ item.report_type }}</span>
+                {% if item.status == 'Recovered' %}
+                  <span class="badge badge-status badge-recovered">Recovered</span>
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="card-body">
+              <span class="card-category">{{ item.category }}</span>
+              <h3 class="card-title">
+                <a href="{{ url_for('view_item', item_id=item.id) }}">{{ item.item_name }}</a>
+              </h3>
+              <p class="card-desc">{{ item.description[:110] }}{% if item.description|length > 110 %}...{% endif %}</p>
+
+              <div class="card-meta">
+                <div class="meta-row">
+                  <svg class="meta-icon" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                  </svg>
+                  <span>{{ item.location }}</span>
+                </div>
+                <div class="meta-row">
+                  <svg class="meta-icon" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
+                  </svg>
+                  <span>{{ item.item_date }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="card-footer">
+              <a href="{{ url_for('view_item', item_id=item.id) }}" class="btn btn-sm btn-outline card-btn">
+                View Details
+              </a>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    {% else %}
+      <!-- Empty State -->
+      <div class="empty-state" id="empty-recent-state">
+        <div class="empty-icon-circle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="empty-svg">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+            <line x1="12" y1="22.08" x2="12" y2="12"/>
+          </svg>
+        </div>
+        <h3 class="empty-title">No Item Reports Yet</h3>
+        <p class="empty-desc">
+          The lost and found registry is currently clear! Be the first to report a misplaced item or something you found on campus.
+        </p>
+        <div class="empty-actions">
+          <a href="{{ url_for('report_lost') }}" class="btn btn-lost" id="empty-btn-lost">Report Lost Item</a>
+          <a href="{{ url_for('report_found') }}" class="btn btn-found" id="empty-btn-found">Report Found Item</a>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="how-it-works-section" aria-label="How FindIt Works">
+  <div class="section-container">
+    <div class="section-header text-center">
+      <h2 class="section-title">How FindIt Works</h2>
+      <p class="section-subtitle">Three simple steps to report and recover items on campus</p>
+    </div>
+
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-badge">1</div>
+        <h3 class="step-title">Report the Item</h3>
+        <p class="step-text">
+          Submit details including the specific campus location, category, date, and description. An optional photo helps others identify it.
+        </p>
+      </div>
+
+      <div class="step-card">
+        <div class="step-badge">2</div>
+        <h3 class="step-title">Search & Verify</h3>
+        <p class="step-text">
+          Browse recent listings or filter by building, category, and date. Compare details to confirm whether it is your item.
+        </p>
+      </div>
+
+      <div class="step-card">
+        <div class="step-badge">3</div>
+        <h3 class="step-title">Claim & Update</h3>
+        <p class="step-text">
+          Safely coordinate handover through the campus security desk or department office, then mark the report as <strong>Recovered</strong>.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

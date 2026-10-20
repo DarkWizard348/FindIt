@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 44" fill="none">
+  <rect x="2" y="4" width="36" height="36" rx="10" fill="url(#brandGrad)"/>
+  <path d="M16 17a6 6 0 1 1 12 0c0 3.314-6 10-6 10s-6-6.686-6-10z" fill="white"/>
+  <circle cx="22" cy="17" r="2.5" fill="#4f46e5"/>
+  <text x="48" y="28" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="22" font-weight="800" fill="#0f172a">Find<tspan fill="#4f46e5">It</tspan></text>
+  <defs>
+    <linearGradient id="brandGrad" x1="2" y1="4" x2="38" y2="40" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#4f46e5"/>
+      <stop offset="1" stop-color="#7c3aed"/>
+    </linearGradient>
+  </defs>
+</svg>

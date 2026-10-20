@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 260" fill="none">
+  <rect width="400" height="260" fill="#f1f5f9"/>
+  <g opacity="0.6">
+    <circle cx="200" cy="110" r="44" fill="#e2e8f0"/>
+    <path d="M190 100a10 10 0 1 1 20 0c0 7-10 16-10 16s-10-9-10-16z" fill="#94a3b8"/>
+    <circle cx="200" cy="100" r="3.5" fill="#f1f5f9"/>
+    <rect x="150" y="170" width="100" height="10" rx="5" fill="#cbd5e1"/>
+    <rect x="170" y="188" width="60" height="8" rx="4" fill="#e2e8f0"/>
+  </g>
+  <text x="200" y="178" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="#64748b" text-anchor="middle">No Image Uploaded</text>
+</svg>
