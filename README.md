@@ -129,7 +129,7 @@ Open **Git Bash** on your Windows computer and execute the following steps:
 
 ### Step 1: Navigate to the Project Directory
 ```bash
-cd /c/Users/KASHIF/.gemini/antigravity-ide/scratch/FindIt
+cd /d/FindIt
 ```
 
 ### Step 2: (Optional but Recommended) Create a Virtual Environment
