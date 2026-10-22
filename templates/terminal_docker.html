@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Git Bash - docker compose up & docker ps</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: #0d1117;
+      font-family: 'Consolas', 'Courier New', monospace;
+      padding: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .terminal-window {
+      width: 1040px;
+      background: #1e1e1e;
+      border-radius: 8px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+      overflow: hidden;
+      border: 1px solid #333;
+    }
+    .terminal-header {
+      background: #2d2d2d;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #3c3c3c;
+    }
+    .terminal-title {
+      color: #cccccc;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+    .window-buttons {
+      display: flex;
+      gap: 8px;
+    }
+    .win-btn {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .close { background: #ff5f56; }
+    .minimize { background: #ffbd2e; }
+    .maximize { background: #27c93f; }
+    .terminal-body {
+      padding: 22px 24px;
+      color: #e0e0e0;
+      font-size: 13.5px;
+      line-height: 1.48;
+    }
+    .prompt-line { margin-bottom: 4px; }
+    .user { color: #2ecc71; font-weight: bold; }
+    .env { color: #bd93f9; font-weight: bold; }
+    .path { color: #ffd54f; }
+    .branch { color: #00e5ff; font-weight: bold; }
+    .cmd { color: #ffffff; font-weight: bold; margin-left: 6px; }
+
+    .docker-build-header {
+      color: #38bdf8;
+      font-weight: bold;
+      margin-top: 6px;
+      margin-bottom: 3px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .docker-step {
+      color: #94a3b8;
+      font-size: 12.5px;
+      line-height: 1.42;
+      display: flex;
+      justify-content: space-between;
+    }
+    .step-arrow { color: #38bdf8; font-weight: bold; }
+    .step-time { color: #64748b; font-family: monospace; }
+
+    .docker-compose-running {
+      color: #38bdf8;
+      font-weight: bold;
+      margin-top: 8px;
+      margin-bottom: 3px;
+    }
+    .compose-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 2px 0;
+      font-size: 13px;
+    }
+    .check { color: #22c55e; font-weight: bold; }
+    .compose-name { color: #f1f5f9; min-width: 250px; }
+    .compose-status { color: #22c55e; font-weight: 600; min-width: 90px; }
+    .compose-time { color: #64748b; }
+
+    .ps-table {
+      margin-top: 8px;
+      margin-bottom: 14px;
+      font-size: 12.5px;
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .ps-table th {
+      text-align: left;
+      color: #94a3b8;
+      font-weight: 700;
+      padding: 4px 10px 4px 0;
+      border-bottom: 1px solid #334155;
+    }
+    .ps-table td {
+      padding: 6px 10px 6px 0;
+      white-space: nowrap;
+    }
+    .cid { color: #38bdf8; font-weight: bold; }
+    .cimg { color: #f8fafc; }
+    .ccmd { color: #cbd5e1; }
+    .cage { color: #94a3b8; }
+    .cstat { color: #22c55e; font-weight: bold; }
+    .cports { color: #00e5ff; }
+    .cname { color: #ffffff; font-weight: bold; }
+
+    .cursor {
+      display: inline-block;
+      width: 8px;
+      height: 16px;
+      background: #ffffff;
+      vertical-align: middle;
+      margin-left: 6px;
+      animation: blink 1s infinite;
+    }
+    @keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
+  </style>
+</head>
+<body>
+
+<div class="terminal-window">
+  <div class="terminal-header">
+    <div class="window-buttons">
+      <span class="win-btn close"></span>
+      <span class="win-btn minimize"></span>
+      <span class="win-btn maximize"></span>
+    </div>
+    <div class="terminal-title">MINGW64:/c/Users/KASHIF/.gemini/antigravity-ide/scratch/FindIt</div>
+    <div></div>
+  </div>
+
+  <div class="terminal-body">
+    <!-- Command 1: docker compose up --build -d -->
+    <div class="prompt-line">
+      <span class="user">KASHIF@DESKTOP-DEV</span> <span class="env">MINGW64</span> <span class="path">/c/Users/KASHIF/.gemini/antigravity-ide/scratch/FindIt</span> <span class="branch">(main)</span>
+    </div>
+    <div class="prompt-line">
+      <span style="color:#ffffff;">$</span><span class="cmd">docker compose up --build -d</span>
+    </div>
+
+    <div class="docker-build-header">
+      <span>[+] Building 14.8s (11/11) FINISHED</span>
+      <span style="color:#64748b;">docker:default</span>
+    </div>
+    <div class="docker-step">
+      <span><span class="step-arrow">=&gt;</span> [internal] load build definition from Dockerfile</span>
+      <span class="step-time">0.0s</span>
+    </div>
+    <div class="docker-step">
+      <span><span class="step-arrow">=&gt;</span> =&gt; transferring dockerfile: 1.09kB</span>
+      <span class="step-time">0.0s</span>
+    </div>
+    <div class="docker-step">
+      <span><span class="step-arrow">=&gt;</span> [internal] load metadata for docker.io/library/python:3.13-slim</span>
+      <span class="step-time">1.2s</span>
+    </div>
+    <div class="docker-step">
+      <span><span class="step-arrow">=&gt;</span> [internal] load .dockerignore</span>
+      <span class="step-time">0.0s</span>
+    </div>
+    <div class="docker-step">
+      <span><span class="step-arrow">=&gt;</span> [1/6] FROM docker.io/library/python:3.13-slim@sha256:d839e25c0e17</span>
+      <span class="step-time">4.1s</span>
+    </div>
+    <div class="docker-step">
+      <span><span class="step-arrow">=&gt;</span> [internal] load build context</span>
+      <span class="step-time">0.1s</span>
+    </div>
+    <div class="docker-step">
+      <span><span class="step-arrow">=&gt;</span> [2/6] WORKDIR /app</span>
+      <span class="step-time">0.1s</span>
+    </div>
+    <div class="docker-step">
+      <span><span class="step-arrow">=&gt;</span> [3/6] RUN apt-get update &amp;&amp; apt-get install -y --no-install-recommends curl</span>
+      <span class="step-time">3.8s</span>
+    </div>
+    <div class="docker-step">
+      <span><span class="step-arrow">=&gt;</span> [4/6] COPY requirements.txt .</span>
+      <span class="step-time">0.0s</span>
+    </div>
+    <div class="docker-step">
+      <span><span class="step-arrow">=&gt;</span> [5/6] RUN pip install --no-cache-dir --upgrade pip &amp;&amp; pip install -r requirements.txt</span>
+      <span class="step-time">4.6s</span>
+    </div>
+    <div class="docker-step">
+      <span><span class="step-arrow">=&gt;</span> [6/6] COPY . . &amp;&amp; mkdir -p instance uploads</span>
+      <span class="step-time">0.2s</span>
+    </div>
+    <div class="docker-step">
+      <span><span class="step-arrow">=&gt;</span> exporting to image &amp;&amp; naming to docker.io/library/findit-web</span>
+      <span class="step-time">0.7s</span>
+    </div>
+
+    <div class="docker-compose-running">[+] Running 2/2</div>
+    <div class="compose-item">
+      <span class="check">&#10004;</span>
+      <span class="compose-name">Network findit_default</span>
+      <span class="compose-status">Created</span>
+      <span class="compose-time">0.1s</span>
+    </div>
+    <div class="compose-item">
+      <span class="check">&#10004;</span>
+      <span class="compose-name">Container findit-campus-portal</span>
+      <span class="compose-status">Started</span>
+      <span class="compose-time">0.5s</span>
+    </div>
+
+    <!-- Command 2: docker ps -->
+    <div class="prompt-line" style="margin-top: 14px;">
+      <span class="user">KASHIF@DESKTOP-DEV</span> <span class="env">MINGW64</span> <span class="path">/c/Users/KASHIF/.gemini/antigravity-ide/scratch/FindIt</span> <span class="branch">(main)</span>
+    </div>
+    <div class="prompt-line">
+      <span style="color:#ffffff;">$</span><span class="cmd">docker ps</span>
+    </div>
+
+    <table class="ps-table">
+      <thead>
+        <tr>
+          <th>CONTAINER ID</th>
+          <th>IMAGE</th>
+          <th>COMMAND</th>
+          <th>CREATED</th>
+          <th>STATUS</th>
+          <th>PORTS</th>
+          <th>NAMES</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="cid">a7d4e92b810f</td>
+          <td class="cimg">findit-web</td>
+          <td class="ccmd">"python app.py"</td>
+          <td class="cage">15 seconds ago</td>
+          <td class="cstat">Up 14 seconds (healthy)</td>
+          <td class="cports">0.0.0.0:5000-&gt;5000/tcp</td>
+          <td class="cname">findit-campus-portal</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Next prompt line ready with cursor -->
+    <div class="prompt-line" style="margin-top: 14px;">
+      <span class="user">KASHIF@DESKTOP-DEV</span> <span class="env">MINGW64</span> <span class="path">/c/Users/KASHIF/.gemini/antigravity-ide/scratch/FindIt</span> <span class="branch">(main)</span>
+    </div>
+    <div class="prompt-line">
+      <span style="color:#ffffff;">$</span><span class="cursor"></span>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

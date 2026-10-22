@@ -358,6 +358,12 @@ For your college DevOps and Full-Stack ISE-2 assignment submission, capture the 
 9. **DevOps Tool Integration (GitHub Actions CI):** `evidence/09_github_actions_ci.png` — Showing automated CI pipeline execution with green passing build on GitHub Actions.
    <img width="1000" alt="GitHub Actions CI Pipeline" src="evidence/09_github_actions_ci.png" />
 
+10. **Docker Containerization (CLI Terminal):** `evidence/10_docker_container.png` — Showing `docker compose up --build -d` multi-stage build, container network creation, and `docker ps` verifying healthy container status on port 5000.
+    <img width="1000" alt="Docker Compose & Container Status" src="evidence/10_docker_container.png" />
+
+11. **Docker Desktop Dashboard GUI:** `evidence/11_docker_desktop.png` — Showing Docker Desktop GUI with `findit-campus-portal` running, memory/CPU statistics, port 5000:5000 binding, and application logs.
+    <img width="1000" alt="Docker Desktop GUI Dashboard" src="evidence/11_docker_desktop.png" />
+
 ---
 
 ## 16. Limitations & Future Scope

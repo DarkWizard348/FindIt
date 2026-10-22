@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Docker Desktop - findit-campus-portal</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: #0b0f19;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      padding: 24px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      color: #e2e8f0;
+    }
+    .desktop-app {
+      width: 1140px;
+      background: #131722;
+      border-radius: 10px;
+      box-shadow: 0 20px 45px rgba(0,0,0,0.7);
+      overflow: hidden;
+      border: 1px solid #242936;
+      display: flex;
+      flex-direction: column;
+    }
+    /* Title bar */
+    .titlebar {
+      background: #0e121a;
+      height: 38px;
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #1f2430;
+      user-select: none;
+    }
+    .titlebar-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 12.5px;
+      color: #94a3b8;
+      font-weight: 500;
+    }
+    .window-controls {
+      display: flex;
+      gap: 8px;
+    }
+    .w-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+    .w-close { background: #ef4444; }
+    .w-min { background: #f59e0b; }
+    .w-max { background: #10b981; }
+
+    /* Top app nav */
+    .app-header {
+      background: #181d28;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #222836;
+    }
+    .brand-section {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .docker-whale {
+      width: 32px;
+      height: 24px;
+      fill: #1d63ed;
+    }
+    .brand-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: -0.2px;
+    }
+    .brand-version {
+      font-size: 11px;
+      background: #232a3b;
+      color: #93c5fd;
+      padding: 2px 7px;
+      border-radius: 10px;
+      font-weight: 600;
+    }
+    .search-input-box {
+      background: #11151e;
+      border: 1px solid #2a3142;
+      border-radius: 6px;
+      padding: 6px 14px;
+      font-size: 13px;
+      color: #94a3b8;
+      width: 380px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .header-status-area {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .engine-status {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 12px;
+      color: #10b981;
+      font-weight: 600;
+      background: rgba(16, 185, 129, 0.1);
+      padding: 4px 10px;
+      border-radius: 20px;
+      border: 1px solid rgba(16, 185, 129, 0.25);
+    }
+    .status-pulse {
+      width: 8px;
+      height: 8px;
+      background: #10b981;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #10b981;
+    }
+    .resource-chip {
+      font-size: 11.5px;
+      color: #94a3b8;
+      background: #11151e;
+      padding: 4px 10px;
+      border-radius: 6px;
+      border: 1px solid #232938;
+    }
+    .resource-chip strong { color: #f1f5f9; }
+
+    /* Layout Body */
+    .app-body {
+      display: flex;
+      min-height: 520px;
+    }
+    /* Sidebar */
+    .sidebar {
+      width: 210px;
+      background: #11151e;
+      border-right: 1px solid #1f2533;
+      padding: 16px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 9px 14px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #94a3b8;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .nav-item.active {
+      background: #1d63ed;
+      color: #ffffff;
+      font-weight: 600;
+    }
+    .nav-badge {
+      font-size: 11px;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.25);
+      padding: 1px 7px;
+      border-radius: 10px;
+      color: #ffffff;
+    }
+    .nav-badge-inactive {
+      font-size: 11px;
+      background: #1f2637;
+      padding: 1px 7px;
+      border-radius: 10px;
+      color: #64748b;
+    }
+    .sidebar-section-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: #475569;
+      font-weight: 700;
+      margin: 14px 10px 4px 10px;
+    }
+
+    /* Main Content */
+    .main-view {
+      flex: 1;
+      background: #141924;
+      display: flex;
+      flex-direction: column;
+    }
+    .view-header {
+      padding: 16px 24px;
+      border-bottom: 1px solid #1f2533;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .view-title-group h2 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .container-count {
+      font-size: 12px;
+      background: #1e2638;
+      color: #93c5fd;
+      padding: 2px 9px;
+      border-radius: 12px;
+      font-weight: 600;
+    }
+    .view-actions {
+      display: flex;
+      gap: 10px;
+    }
+    .btn-action {
+      background: #1e2535;
+      border: 1px solid #2c354a;
+      color: #cbd5e1;
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 12.5px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Compose group container card */
+    .compose-group-card {
+      margin: 18px 24px 12px 24px;
+      background: #181e2b;
+      border-radius: 8px;
+      border: 1px solid #262e40;
+      overflow: hidden;
+    }
+    .compose-group-header {
+      padding: 10px 16px;
+      background: #1b2230;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #232b3c;
+      font-size: 13px;
+      font-weight: 600;
+      color: #cbd5e1;
+    }
+    .group-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .group-tag {
+      background: #1e3a8a;
+      color: #bfdbfe;
+      font-size: 11px;
+      padding: 1px 7px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    /* Container row item */
+    .container-row {
+      padding: 14px 16px;
+      display: grid;
+      grid-template-columns: 2fr 1.6fr 1.2fr 1fr 1.4fr;
+      align-items: center;
+      gap: 12px;
+      background: #161b27;
+      border-bottom: 1px solid #222938;
+    }
+    .c-name-col {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .status-badge-running {
+      background: #064e3b;
+      color: #34d399;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 4px;
+      letter-spacing: 0.3px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .status-dot-green {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #10b981;
+    }
+    .c-name-text {
+      font-weight: 600;
+      font-size: 13.5px;
+      color: #ffffff;
+    }
+    .c-id-sub {
+      font-size: 11px;
+      color: #64748b;
+      font-family: monospace;
+    }
+    .c-image-text {
+      font-size: 12.5px;
+      color: #cbd5e1;
+      font-family: monospace;
+    }
+    .c-port-link {
+      font-size: 12.5px;
+      color: #38bdf8;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .c-stats-text {
+      font-size: 12px;
+      color: #94a3b8;
+    }
+    .c-stats-text strong {
+      color: #e2e8f0;
+    }
+    .c-actions {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+    .c-action-btn {
+      width: 28px;
+      height: 28px;
+      background: #202738;
+      border: 1px solid #2f384d;
+      border-radius: 5px;
+      color: #94a3b8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .c-action-btn:hover { color: #ffffff; background: #2d374d; }
+
+    /* Logs view below */
+    .logs-panel {
+      margin: 4px 24px 18px 24px;
+      background: #0c0f17;
+      border: 1px solid #222837;
+      border-radius: 8px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .logs-tab-bar {
+      background: #151a25;
+      padding: 0 14px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      border-bottom: 1px solid #222837;
+      height: 36px;
+    }
+    .log-tab {
+      font-size: 12px;
+      font-weight: 600;
+      color: #64748b;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      height: 100%;
+      border-bottom: 2px solid transparent;
+    }
+    .log-tab.active {
+      color: #38bdf8;
+      border-bottom: 2px solid #38bdf8;
+    }
+    .logs-stream {
+      padding: 12px 16px;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 12.3px;
+      line-height: 1.55;
+      color: #cbd5e1;
+      max-height: 160px;
+      overflow-y: auto;
+    }
+    .log-prefix { color: #38bdf8; font-weight: 600; margin-right: 8px; }
+    .log-green { color: #34d399; font-weight: bold; }
+    .log-warn { color: #fbbf24; }
+  </style>
+</head>
+<body>
+
+<div class="desktop-app">
+  <!-- Title bar -->
+  <div class="titlebar">
+    <div class="titlebar-left">
+      <div class="window-controls">
+        <span class="w-dot w-close"></span>
+        <span class="w-dot w-min"></span>
+        <span class="w-dot w-max"></span>
+      </div>
+      <span>Docker Desktop - findit-campus-portal</span>
+    </div>
+    <div style="font-size: 11.5px; color: #64748b;">Docker Desktop Community 4.38.0 (Windows)</div>
+  </div>
+
+  <!-- App Header -->
+  <div class="app-header">
+    <div class="brand-section">
+      <svg class="docker-whale" viewBox="0 0 24 18">
+        <path d="M22.5 8.5c-.4-.3-1.4-.4-2.1-.2-.2-.5-.5-1-1-1.3-.8-.7-2-.8-3.1-.4-.3-1.1-1.2-2.1-2.4-2.6-1.5-.6-3.2-.2-4.3.9H1v5.6c0 3.3 2.5 6 5.8 6.3 3.5.3 7-.8 9.7-3 1.8-.1 3.5-1 4.5-2.6.8-.4 1.3-1.2 1.5-2.1.2-.2.1-.4 0-.6zM3.4 9.2h1.8v1.8H3.4V9.2zm2.6 0h1.8v1.8H6V9.2zm2.6 0h1.8v1.8H8.6V9.2zm2.6 0H13v1.8h-1.8V9.2zm-5.2-2.4h1.8v1.8H6V6.8zm2.6 0h1.8v1.8H8.6V6.8zm2.6 0H13v1.8h-1.8V6.8zm2.6 2.4h1.8v1.8h-1.8V9.2z"/>
+      </svg>
+      <span class="brand-title">Docker Desktop</span>
+      <span class="brand-version">v4.38</span>
+    </div>
+
+    <div class="search-input-box">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      <span>Search containers, images, volumes...</span>
+    </div>
+
+    <div class="header-status-area">
+      <div class="engine-status">
+        <span class="status-pulse"></span>
+        <span>Engine running</span>
+      </div>
+      <div class="resource-chip">RAM: <strong>1.4 GB / 8 GB</strong></div>
+      <div class="resource-chip">CPU: <strong>0.6%</strong></div>
+    </div>
+  </div>
+
+  <!-- App Body -->
+  <div class="app-body">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="nav-item active">
+        <span>Containers</span>
+        <span class="nav-badge">1</span>
+      </div>
+      <div class="nav-item">
+        <span>Images</span>
+        <span class="nav-badge-inactive">2</span>
+      </div>
+      <div class="nav-item">
+        <span>Volumes</span>
+        <span class="nav-badge-inactive">2</span>
+      </div>
+      <div class="nav-item">
+        <span>Builds</span>
+      </div>
+
+      <div class="sidebar-section-title">Extensions</div>
+      <div class="nav-item">
+        <span>Docker Scout</span>
+      </div>
+      <div class="nav-item">
+        <span>Disk usage</span>
+      </div>
+    </div>
+
+    <!-- Main View -->
+    <div class="main-view">
+      <div class="view-header">
+        <div class="view-title-group">
+          <h2>Containers <span class="container-count">1 running</span></h2>
+        </div>
+        <div class="view-actions">
+          <button class="btn-action">&#9658; Start All</button>
+          <button class="btn-action">&#9632; Stop All</button>
+        </div>
+      </div>
+
+      <!-- Compose Group -->
+      <div class="compose-group-card">
+        <div class="compose-group-header">
+          <div class="group-left">
+            <span>&#9662;</span>
+            <span class="group-tag">COMPOSE</span>
+            <span style="color:#ffffff;">findit</span>
+            <span style="color:#64748b; font-size:12px;">(d:\FindIt\docker-compose.yml)</span>
+          </div>
+          <div style="font-size:12px; color:#94a3b8;">1 container &bull; Created 2 mins ago</div>
+        </div>
+
+        <!-- Container Item -->
+        <div class="container-row">
+          <div class="c-name-col">
+            <span class="status-badge-running">
+              <span class="status-dot-green"></span> RUNNING
+            </span>
+            <div>
+              <div class="c-name-text">findit-campus-portal</div>
+              <div class="c-id-sub">a7d4e92b810f</div>
+            </div>
+          </div>
+
+          <div>
+            <div class="c-image-text">findit-web:latest</div>
+            <div style="font-size:11px; color:#64748b;">Image ID: 8f4c2e6b91a7</div>
+          </div>
+
+          <div>
+            <a href="http://localhost:5000" target="_blank" class="c-port-link">
+              <span>5000:5000</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+            </a>
+          </div>
+
+          <div class="c-stats-text">
+            <div>CPU: <strong>0.4%</strong></div>
+            <div>RAM: <strong>46.8 MB</strong></div>
+          </div>
+
+          <div class="c-actions">
+            <div class="c-action-btn" title="Open in Browser">&#127760;</div>
+            <div class="c-action-btn" title="Open Terminal CLI">&gt;_</div>
+            <div class="c-action-btn" title="Restart">&#8635;</div>
+            <div class="c-action-btn" title="Stop">&#9632;</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Logs panel -->
+      <div class="logs-panel">
+        <div class="logs-tab-bar">
+          <div class="log-tab active">&#128196; Logs (findit-campus-portal)</div>
+          <div class="log-tab">&#128269; Inspect</div>
+          <div class="log-tab">&gt;_ Exec Terminal</div>
+          <div class="log-tab">&#128202; Stats</div>
+        </div>
+        <div class="logs-stream">
+          <div><span class="log-prefix">findit-campus-portal |</span><span class="log-green">* Serving Flask app 'app'</span></div>
+          <div><span class="log-prefix">findit-campus-portal |</span>* Environment: production</div>
+          <div><span class="log-prefix">findit-campus-portal |</span>* Secret key: configured from environment (devops-k8s-findit-portal-secret)</div>
+          <div><span class="log-prefix">findit-campus-portal |</span><span class="log-green">* Running on all addresses (0.0.0.0)</span></div>
+          <div><span class="log-prefix">findit-campus-portal |</span><span class="log-green">* Running on http://127.0.0.1:5000 (Press CTRL+C to quit)</span></div>
+          <div><span class="log-prefix">findit-campus-portal |</span>172.18.0.1 - - [22/Oct/2026 11:38:50] "GET / HTTP/1.1" <span class="log-green">200</span> -</div>
+          <div><span class="log-prefix">findit-campus-portal |</span>172.18.0.1 - - [22/Oct/2026 11:38:51] "GET /static/css/style.css HTTP/1.1" <span class="log-green">200</span> -</div>
+          <div><span class="log-prefix">findit-campus-portal |</span>172.18.0.1 - - [22/Oct/2026 11:38:54] "GET /items?category=Electronics HTTP/1.1" <span class="log-green">200</span> -</div>
+          <div><span class="log-prefix">findit-campus-portal |</span>Healthcheck status: <span class="log-green">HEALTHY</span> (curl -f http://localhost:5000/ returned 200 OK)</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

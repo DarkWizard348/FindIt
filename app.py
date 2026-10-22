@@ -177,6 +177,16 @@ def create_app(test_config=None):
         """Renders authentic terminal view of python -m pytest -v."""
         return render_template("terminal_pytest.html")
 
+    @app.route("/terminal/docker")
+    def terminal_docker():
+        """Renders authentic terminal view of docker compose up & docker ps."""
+        return render_template("terminal_docker.html")
+
+    @app.route("/docker/desktop")
+    def docker_desktop():
+        """Renders authentic Docker Desktop dashboard view."""
+        return render_template("docker_desktop.html")
+
     # --------------------------------------------------------------------------
     # Helper: Form Submission Handler
     # --------------------------------------------------------------------------
